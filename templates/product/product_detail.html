@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Product Management{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol role="list" class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'product-list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-home"></i>
+                        <span class="sr-only">Home</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                    <a href="{% url 'product-list' %}" class="text-sm font-medium text-gray-500 hover:text-gray-700">
+                        Products
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                    <span class="text-sm font-medium text-gray-500">{{ product.name }}</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Product Header -->
+<div class="bg-white shadow rounded-lg mb-6">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{ product.name }}</h1>
+                <p class="text-sm text-gray-500">Product Code: {{ product.product_code }}</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                {% if product.is_active %}
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    <i class="fas fa-check-circle mr-1"></i>
+                    Active
+                </span>
+                {% else %}
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                    <i class="fas fa-times-circle mr-1"></i>
+                    Inactive
+                </span>
+                {% endif %}
+                <button
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-edit mr-2"></i>
+                    Edit Product
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Grid -->
+    <div class="px-6 py-6">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Base Unit of Measure</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ product.base_uom }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Costing Method</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ product.get_costing_method_display }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Tracking Method</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ product.get_tracking_method_display }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Safety Stock</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ product.safety_stock }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Reorder Quantity</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ product.reorder_qty }}</dd>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product UoMs -->
+<div class="bg-white shadow rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-medium text-gray-900">Units of Measure</h2>
+            <button hx-get="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content" onclick="showModal()"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                <i class="fas fa-plus mr-2"></i>
+                Add UoM
+            </button>
+        </div>
+    </div>
+
+    {% if product_uoms %}
+    <div class="overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Unit of Measure
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Factor
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Default Sales
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Default Purchase
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for product_uom in product_uoms %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ product_uom.uom }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ product_uom.factor }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% if product_uom.is_default_sales %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check mr-1"></i>
+                            Yes
+                        </span>
+                        {% else %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            No
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% if product_uom.is_default_purchase %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check mr-1"></i>
+                            Yes
+                        </span>
+                        {% else %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            No
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <a href="#" class="text-red-600 hover:text-red-900">
+                            <i class="fas fa-trash"></i> Remove
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <i class="fas fa-ruler text-gray-400 text-4xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No additional units of measure</h3>
+        <p class="text-gray-500 mb-4">
+            Add alternative units of measure for this product.
+        </p>
+        <button hx-post="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content" onclick="showModal()"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            <i class="fas fa-plus mr-2"></i>
+            Add UoM
+        </button>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

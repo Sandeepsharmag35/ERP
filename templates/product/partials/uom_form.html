@@ -1,0 +1,81 @@
+<div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"></div>
+<div class="sm:flex sm:items-start">
+    <div class="w-full">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Create New Unit of Measure
+            </h3>
+            <button type="button" onclick="hideModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <form hx-post="{{ action_url }}" hx-target="#modal-content" hx-swap="innerHTML">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- Code -->
+                <div>
+                    <label for="{{ form.code.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Code <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.code }}
+                    {% if form.code.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.code.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500">Short code (e.g., EA, KG, M)</p>
+                </div>
+
+                <!-- Name -->
+                <div>
+                    <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Name <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500">Full name (e.g., Each, Kilogram, Meter)</p>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Category <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500">Type of measurement (e.g., weight, length, qty)</p>
+                </div>
+
+                <!-- SI Conversion -->
+                <div>
+                    <label for="{{ form.conversion_to_si.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700">
+                        SI Conversion Factor <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.conversion_to_si }}
+                    {% if form.conversion_to_si.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.conversion_to_si.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500">Factor to convert to SI base unit</p>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="hideModal()"
+                    class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {{ submit_text }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

@@ -1,0 +1,127 @@
+<div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+    <div class="sm:flex sm:items-start">
+        <div class="w-full">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    Create New Product
+                </h3>
+                <button type="button" onclick="hideModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form hx-post="{{ action_url }}" hx-target="#modal-content" hx-swap="innerHTML" method="post">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <!-- Product Code -->
+                    <div>
+                        <label for="{{ form.product_code.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Product Code <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.product_code }}
+                        {% if form.product_code.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.product_code.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Name -->
+                    <div>
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Name <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Base UoM -->
+                    <div>
+                        <label for="{{ form.base_uom.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Base Unit of Measure <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.base_uom }}
+                        {% if form.base_uom.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.base_uom.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Costing Method -->
+                    <div>
+                        <label for="{{ form.costing_method.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Costing Method <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.costing_method }}
+                        {% if form.costing_method.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.costing_method.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Tracking Method -->
+                    <div>
+                        <label for="{{ form.tracking_method.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Tracking Method <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.tracking_method }}
+                        {% if form.tracking_method.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.tracking_method.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Safety Stock -->
+                    <div>
+                        <label for="{{ form.safety_stock.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Safety Stock
+                        </label>
+                        {{ form.safety_stock }}
+                        {% if form.safety_stock.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.safety_stock.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Reorder Quantity -->
+                    <div>
+                        <label for="{{ form.reorder_qty.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Reorder Quantity
+                        </label>
+                        {{ form.reorder_qty }}
+                        {% if form.reorder_qty.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.reorder_qty.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Active -->
+                    <div class="sm:col-span-2">
+                        <div class="flex items-center">
+                            {{ form.is_active }}
+                            <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Active
+                            </label>
+                        </div>
+                        {% if form.is_active.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.is_active.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" onclick="hideModal()"
+                        class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{ submit_text }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
