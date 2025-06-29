@@ -1,25 +1,25 @@
 from django.db import models
+from erp.models import UserOrganizationMixin, TimestampedModel
 import uuid
 
 
-class Warehouse(models.Model):
+class Warehouse(UserOrganizationMixin, TimestampedModel, models.Model):
     warehouse_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
-    organization_id = models.UUIDField()
     code = models.CharField(max_length=30)
     name = models.CharField(max_length=100)
     address = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("organization_id", "code")
+        unique_together = ("organization", "code")
 
     def __str__(self):
         return f"{self.name} ({self.code})"
 
 
-class InventoryLocation(models.Model):
+class InventoryLocation(UserOrganizationMixin, TimestampedModel, models.Model):
     location_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     code = models.CharField(max_length=50)
@@ -34,11 +34,10 @@ class InventoryLocation(models.Model):
         return f"{self.name} ({self.code}) in {self.warehouse.code}"
 
 
-class InventoryItem(models.Model):
+class InventoryItem(UserOrganizationMixin, TimestampedModel, models.Model):
     inventory_item_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
-    organization_id = models.UUIDField()
     product = models.ForeignKey("product.Product", on_delete=models.PROTECT)
     warehouse = models.ForeignKey(Warehouse, on_delete=models.PROTECT)
     location = models.ForeignKey(InventoryLocation, on_delete=models.PROTECT)
@@ -50,7 +49,7 @@ class InventoryItem(models.Model):
         return f"{self.product.name} @ {self.location.code}: {self.quantity_on_hand}"
 
 
-class InventoryTransaction(models.Model):
+class InventoryTransaction(UserOrganizationMixin, TimestampedModel, models.Model):
     class TransactionType(models.TextChoices):
         IN = "IN", "Inbound"
         OUT = "OUT", "Outbound"
@@ -60,7 +59,6 @@ class InventoryTransaction(models.Model):
     transaction_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
-    organization_id = models.UUIDField()
     transaction_type = models.CharField(max_length=20, choices=TransactionType.choices)
     transaction_date = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey("product.Product", on_delete=models.PROTECT)

@@ -100,6 +100,29 @@
                         <p class="mt-1 text-sm text-red-600">{{ form.reorder_qty.errors.0 }}</p>
                         {% endif %}
                     </div>
+                    <!-- User -->
+                    <div>
+                        <label for="{{ form.user.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            User <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.user }}
+                        {% if form.user.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.user.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-xs text-gray-500">User creating this UoM</p>
+                    </div>
+                    <!-- Organization -->
+                    <div>
+                        <label for="{{ form.organization.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700">
+                            Organization <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.organization }}
+                        {% if form.organization.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.organization.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-xs text-gray-500">Organization this UoM belongs to</p>
+                    </div>
 
                     <!-- Is Active -->
                     <div class="sm:col-span-2">

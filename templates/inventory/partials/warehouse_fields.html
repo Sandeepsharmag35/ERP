@@ -1,0 +1,109 @@
+{% if transaction_type %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% if transaction_type == 'IN' %}
+    <!-- Inbound: Only To Warehouse -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            To Warehouse <span class="text-red-500">*</span>
+        </label>
+        <select name="to_warehouse" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select warehouse...</option>
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.warehouse_id }}">{{ warehouse.name }} ({{ warehouse.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% elif transaction_type == 'OUT' %}
+    <!-- Outbound: Only From Warehouse -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            From Warehouse <span class="text-red-500">*</span>
+        </label>
+        <select name="from_warehouse" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select warehouse...</option>
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.warehouse_id }}">{{ warehouse.name }} ({{ warehouse.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% elif transaction_type == 'XFER' %}
+    <!-- Transfer: Both From and To Warehouse -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            From Warehouse <span class="text-red-500">*</span>
+        </label>
+        <select name="from_warehouse" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select warehouse...</option>
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.warehouse_id }}">{{ warehouse.name }} ({{ warehouse.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            To Warehouse <span class="text-red-500">*</span>
+        </label>
+        <select name="to_warehouse" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select warehouse...</option>
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.warehouse_id }}">{{ warehouse.name }} ({{ warehouse.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% elif transaction_type == 'ADJ' %}
+    <!-- Adjustment: Only To Warehouse -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Warehouse <span class="text-red-500">*</span>
+        </label>
+        <select name="to_warehouse" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">Select warehouse...</option>
+            {% for warehouse in warehouses %}
+            <option value="{{ warehouse.warehouse_id }}">{{ warehouse.name }} ({{ warehouse.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Transaction Type Description -->
+<div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
+    <div class="flex">
+        <div class="flex-shrink-0">
+            <i class="fas fa-info-circle text-blue-400"></i>
+        </div>
+        <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">
+                {% if transaction_type == 'IN' %}
+                Inbound Transaction
+                {% elif transaction_type == 'OUT' %}
+                Outbound Transaction
+                {% elif transaction_type == 'XFER' %}
+                Transfer Transaction
+                {% elif transaction_type == 'ADJ' %}
+                Adjustment Transaction
+                {% endif %}
+            </h3>
+            <div class="mt-2 text-sm text-blue-700">
+                {% if transaction_type == 'IN' %}
+                <p>Receiving stock into a warehouse from external source (purchase, production, etc.)</p>
+                {% elif transaction_type == 'OUT' %}
+                <p>Removing stock from a warehouse to external destination (sale, consumption, etc.)</p>
+                {% elif transaction_type == 'XFER' %}
+                <p>Moving stock from one warehouse to another warehouse</p>
+                {% elif transaction_type == 'ADJ' %}
+                <p>Adjusting stock levels due to physical count differences, damage, or other corrections</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

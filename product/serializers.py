@@ -24,7 +24,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id",
-            "organization_id",
+            "organization",
             "product_code",
             "name",
             "base_uom",

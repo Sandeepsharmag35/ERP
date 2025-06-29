@@ -1,0 +1,60 @@
+<div class="space-y-4">
+    <!-- User -->
+    <div>
+        <label for="{{ form.user.id_for_label }}" class="block text-sm font-medium text-gray-700">
+            User <span class="text-red-500">*</span>
+        </label>
+        {{ form.user }}
+        {% if form.user.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.user.errors.0 }}</p>
+        {% endif %}
+        <p class="mt-1 text-xs text-gray-500">User creating this UoM</p>
+    </div>
+    <!-- Organization -->
+    <div>
+        <label for="{{ form.organization.id_for_label }}" class="block text-sm font-medium text-gray-700">
+            Organization <span class="text-red-500">*</span>
+        </label>
+        {{ form.organization }}
+        {% if form.organization.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.organization.errors.0 }}</p>
+        {% endif %}
+        <p class="mt-1 text-xs text-gray-500">Organization this UoM belongs to</p>
+    </div>
+
+    <div>
+        <label for="{{ form.code.id_for_label }}" class="block text-sm font-medium text-gray-700">
+            Code <span class="text-red-500">*</span>
+        </label>
+        {{ form.code }}
+        {% if form.code.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.code.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+            Name <span class="text-red-500">*</span>
+        </label>
+        {{ form.name }}
+        {% if form.name.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <label for="{{ form.address.id_for_label }}" class="block text-sm font-medium text-gray-700">
+            Address
+        </label>
+        {{ form.address }}
+        {% if form.address.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.address.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="flex items-center">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+            Active
+        </label>
+    </div>

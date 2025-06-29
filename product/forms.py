@@ -5,8 +5,18 @@ from .models import Product, Uom, ProductUom
 class UomForm(forms.ModelForm):
     class Meta:
         model = Uom
-        fields = ["code", "name", "category", "conversion_to_si"]
+        fields = ["user", "organization", "code", "name", "category", "conversion_to_si"]
         widgets = {
+            "user": forms.Select(
+                attrs={
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                }
+            ),
+            "organization": forms.Select(
+                attrs={
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                }
+            ),
             "code": forms.TextInput(
                 attrs={
                     "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
@@ -39,6 +49,8 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
+            "user",
+            "organization",
             "product_code",
             "name",
             "base_uom",
@@ -49,6 +61,16 @@ class ProductForm(forms.ModelForm):
             "is_active",
         ]
         widgets = {
+            "user": forms.Select(
+                attrs={
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                }
+            ),
+            "organization": forms.Select(
+                attrs={
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                }
+            ),
             "product_code": forms.TextInput(
                 attrs={
                     "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",

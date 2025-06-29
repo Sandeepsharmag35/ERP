@@ -1,0 +1,138 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}{{ warehouse.name }} - Warehouses{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <div>
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <ol class="flex items-center space-x-4">
+                            <li>
+                                <a href="{% url 'warehouse_list' %}" class="text-gray-400 hover:text-gray-500">
+                                    <i class="fas fa-warehouse"></i>
+                                    <span class="sr-only">Warehouses</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="flex items-center">
+                                    <i class="fas fa-chevron-right text-gray-400 mr-4"></i>
+                                    <span class="text-sm font-medium text-gray-900">{{ warehouse.name }}</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="mt-2">
+                        <h1 class="text-2xl font-bold text-gray-900">{{ warehouse.name }}</h1>
+                        <p class="text-sm text-gray-500">Code: {{ warehouse.code }}</p>
+                    </div>
+                </div>
+                <button onclick="toggleLocationModal()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    <i class="fas fa-plus mr-2"></i>Add Location
+                </button>
+            </div>
+        </div>
+
+        <div class="px-6 py-4">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                {% if warehouse.address %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Address</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ warehouse.address }}</dd>
+                </div>
+                {% endif %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1">
+                        {% if warehouse.is_active %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check-circle mr-1"></i>Active
+                        </span>
+                        {% else %}
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            <i class="fas fa-times-circle mr-1"></i>Inactive
+                        </span>
+                        {% endif %}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Locations Section -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-medium text-gray-900">
+                <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>
+                Inventory Locations
+            </h2>
+            <p class="mt-1 text-sm text-gray-600">Manage storage locations within this warehouse</p>
+        </div>
+
+        <div id="location-list">
+            {% include 'inventory/partials/location_list.html' %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Adding Location -->
+<div id="location-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Add New Location</h3>
+                <button onclick="toggleLocationModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form hx-post="{% url 'location_create' warehouse.warehouse_id %}" hx-target="#location-list"
+                hx-swap="outerHTML" class="space-y-4">
+                {% csrf_token %}
+                {% include 'inventory/partials/location_form.html' %}
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="toggleLocationModal()"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md text-sm">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm">
+                        <i class="fas fa-save mr-2"></i>Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleLocationModal() {
+        const modal = document.getElementById('location-modal');
+        modal.classList.toggle('hidden');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('location-modal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            toggleLocationModal();
+        }
+    });
+
+    // Close modal after successful form submission
+    document.body.addEventListener('htmx:afterSwap', function (e) {
+        if (e.target.id === 'location-list') {
+            toggleLocationModal();
+            // Clear form
+            document.querySelector('#location-modal form').reset();
+        }
+    });
+</script>
+
+{% endblock %}

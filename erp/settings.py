@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "tailwind",
     "theme",
+    "usermanagement",
     "product",
     "inventory",
     "django_htmx",
@@ -92,11 +94,11 @@ DATABASES = {
     }
     # 'postgre': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'erp_db',
-    #     'USER': 'erp_user',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
+    #     'NAME': config('DB_NAME'),
+    #     'USER': config('DB_USER'),
+    #     'PASSWORD': config('DB_PASSWORD'),
+    #     'HOST': config('DB_HOST', default='localhost'),
+    #     'PORT': config('DB_PORT', default='5432', cast=int),
     # }
 }
 

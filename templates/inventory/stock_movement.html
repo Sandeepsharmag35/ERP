@@ -1,0 +1,56 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Stock Movement - Inventory Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Stock Movement</h1>
+            <p class="mt-1 text-sm text-gray-600">Create inventory transactions for stock adjustments</p>
+        </div>
+        <a href="{% url 'stock_grid' %}"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Stock
+        </a>
+    </div>
+
+    <!-- Transaction Form -->
+    <div class="bg-white shadow-lg rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Create Transaction</h3>
+        </div>
+
+        <div class="px-6 py-6">
+            <form hx-post="{% url 'stock_movement_create' %}" hx-target="#transaction-result" class="space-y-6">
+                {% csrf_token %}
+                {% include 'inventory/partials/transaction_form.html' %}
+
+                <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                    <button type="button" onclick="resetForm()"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-undo mr-2"></i>Reset
+                    </button>
+                    <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-save mr-2"></i>Create Transaction
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transaction Result -->
+    <div id="transaction-result"></div>
+</div>
+
+<script>
+    function resetForm() {
+        document.querySelector('form').reset();
+        document.getElementById('warehouse-fields').innerHTML = '';
+        document.getElementById('transaction-result').innerHTML = '';
+    }
+</script>
+
+{% endblock %}

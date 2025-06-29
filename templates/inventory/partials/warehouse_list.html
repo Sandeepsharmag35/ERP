@@ -1,0 +1,45 @@
+{% if warehouses %}
+<ul class="divide-y divide-gray-200">
+    {% for warehouse in warehouses %}
+    <li class="px-6 py-4 hover:bg-gray-50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-warehouse text-indigo-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <div class="flex items-center">
+                        <p class="text-sm font-medium text-gray-900">{{ warehouse.name }}</p>
+                        <span
+                            class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            {{ warehouse.code }}
+                        </span>
+                    </div>
+                    {% if warehouse.address %}
+                    <p class="text-sm text-gray-500">{{ warehouse.address|truncatechars:50 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="{% url 'warehouse_detail' warehouse.warehouse_id %}"
+                    class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                    <i class="fas fa-eye mr-1"></i>View
+                </a>
+                <span class="text-gray-300">|</span>
+                <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="text-center py-12">
+    <i class="fas fa-warehouse text-gray-400 text-4xl mb-4"></i>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">No warehouses found</h3>
+    <p class="text-gray-500">Get started by creating your first warehouse.</p>
+</div>
+{% endif %}

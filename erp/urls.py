@@ -50,4 +50,5 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("", include("product.urls")),
+    path("", include("inventory.urls")),
 ]

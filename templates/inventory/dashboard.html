@@ -1,0 +1,209 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Dashboard - Inventory Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p class="mt-1 text-sm text-gray-600">Overview of your inventory system</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-indigo-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-warehouse text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Warehouses</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_warehouses }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="{% url 'warehouse_list' %}" class="font-medium text-indigo-700 hover:text-indigo-900">
+                        View all warehouses
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Locations</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_locations }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="{% url 'warehouse_list' %}" class="font-medium text-green-700 hover:text-green-900">
+                        Manage locations
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-boxes text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Items in Stock</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_items }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="{% url 'stock_grid' %}" class="font-medium text-yellow-700 hover:text-yellow-900">
+                        View stock levels
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Transactions</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Latest inventory movements</p>
+                </div>
+                <a href="{% url 'stock_movement_create' %}"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium">
+                    <i class="fas fa-plus mr-1"></i>New Movement
+                </a>
+            </div>
+        </div>
+
+        {% if recent_transactions %}
+        <ul class="divide-y divide-gray-200">
+            {% for transaction in recent_transactions %}
+            <li class="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            {% if transaction.transaction_type == 'IN' %}
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-arrow-down text-green-600 text-xs"></i>
+                            </div>
+                            {% elif transaction.transaction_type == 'OUT' %}
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-arrow-up text-red-600 text-xs"></i>
+                            </div>
+                            {% elif transaction.transaction_type == 'XFER' %}
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-exchange-alt text-blue-600 text-xs"></i>
+                            </div>
+                            {% else %}
+                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-edit text-yellow-600 text-xs"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center">
+                                <p class="text-sm font-medium text-gray-900">{{ transaction.product.name }}</p>
+                                <span
+                                    class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                     {% if transaction.transaction_type == 'IN' %}bg-green-100 text-green-800{% elif transaction.transaction_type == 'OUT' %}bg-red-100 text-red-800{% elif transaction.transaction_type == 'XFER' %}bg-blue-100 text-blue-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                    {{ transaction.get_transaction_type_display }}
+                                </span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>Qty: {{ transaction.quantity }}</span>
+                                {% if transaction.from_warehouse %}
+                                <span class="mx-2">•</span>
+                                <span>From: {{ transaction.from_warehouse.code }}</span>
+                                {% endif %}
+                                {% if transaction.to_warehouse %}
+                                <span class="mx-2">•</span>
+                                <span>To: {{ transaction.to_warehouse.code }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        {{ transaction.transaction_date|date:"M d, Y H:i" }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="text-center py-12">
+            <i class="fas fa-exchange-alt text-gray-400 text-4xl mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No transactions yet</h3>
+            <p class="text-gray-500 mb-4">Start by creating your first inventory movement.</p>
+            <a href="{% url 'stock_movement_create' %}"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                <i class="fas fa-plus mr-2"></i>Create Transaction
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="sm:flex sm:items-start sm:justify-between">
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Quick Actions</h3>
+                    <div class="mt-2 max-w-xl text-sm text-gray-500">
+                        <p>Common tasks to manage your inventory efficiently.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <a href="{% url 'warehouse_list' %}"
+                    class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-warehouse mr-2"></i>
+                    Manage Warehouses
+                </a>
+                <a href="{% url 'stock_grid' %}"
+                    class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-boxes mr-2"></i>
+                    View Stock Levels
+                </a>
+                <a href="{% url 'stock_movement_create' %}"
+                    class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-exchange-alt mr-2"></i>
+                    Stock Movement
+                </a>
+                <button
+                    class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    Reports
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

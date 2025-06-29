@@ -56,8 +56,6 @@ def product_create(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
-            # Set organization_id from user context (you'll need to implement this)
-            # product.organization_id = request.user.organization_id
             product.save()
 
             messages.success(request, f'Product "{product.name}" created successfully!')

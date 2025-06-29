@@ -1,8 +1,9 @@
 from django.db import models
+from erp.models import UserOrganizationMixin, TimestampedModel
 import uuid
 
 
-class Uom(models.Model):
+class Uom(UserOrganizationMixin, TimestampedModel, models.Model):
     code = models.CharField(max_length=20, unique=True)  # e.g., 'EA', 'KG'
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=80)  # e.g., 'weight', 'length', 'qty'
@@ -12,7 +13,7 @@ class Uom(models.Model):
         return f"{self.name} ({self.code})"
 
 
-class Product(models.Model):
+class Product(UserOrganizationMixin, TimestampedModel, models.Model):
     class CostingMethod(models.TextChoices):
         FIFO = "FIFO", "FIFO"
         AVG = "AVG", "Average"
@@ -23,9 +24,6 @@ class Product(models.Model):
         SERIAL = "SERIAL", "Serial"
         BATCH = "BATCH", "Batch"
 
-    organization_id = models.UUIDField(
-        default=uuid.uuid4
-    )  # will be scoped via UserOrganizationMixin
     product_code = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
     base_uom = models.ForeignKey("product.Uom", on_delete=models.PROTECT)
@@ -38,13 +36,13 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("organization_id", "product_code")
+        unique_together = ("organization", "product_code")
 
     def __str__(self):
         return self.name
 
 
-class ProductUom(models.Model):
+class ProductUom(UserOrganizationMixin, TimestampedModel, models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     uom = models.ForeignKey(Uom, on_delete=models.CASCADE)
     factor = models.DecimalField(max_digits=15, decimal_places=4)
