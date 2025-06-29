@@ -1,4 +1,4 @@
-#ERP System (Django)
+**#ERP System (Django)**
 
 A modular, production-grade ERP System built using Django, Django REST Framework, and a layered architecture. The system is designed for multi-organization use and includes inventory management, product tracking, stock movement, user authentication, and more.
 
@@ -6,19 +6,10 @@ A modular, production-grade ERP System built using Django, Django REST Framework
 
 ✅ Modular apps: product, inventory, usermanagement, etc.
 
-✅ User & Organization-based data isolation
-
-✅ Inventory transactions (IN/OUT) with costing engine (FIFO, AVG, STD)
-
-✅ Stock tracking (serial, batch, or none)
-
-✅ UOM support
-
-✅ Service layer architecture (clean, testable)
+✅ UI: HTMX for dynamic UI
 
 ✅ Auto timestamping for records
 
-✅ Soft delete via is_active
 
 #🛠️ Technologies Used
 
@@ -85,6 +76,6 @@ Delete __pycache__ folders when resetting the project.
 
 Follow DRY principles using Mixins like UserOrganizationMixin, TimestampedModel.
 
-#🧠 Author
+**#🧠 Author**
 
 Sandip Sharma
