@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+{% load static tailwind_tags %}
+{% block title %}Create Product - Product Management{% endblock %}
+
+{% block content %}
 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
     <div class="sm:flex sm:items-start">
         <div class="w-full">
@@ -10,7 +15,7 @@
                 </button>
             </div>
 
-            <form hx-post="{{ action_url }}" hx-target="#modal-content" hx-swap="innerHTML" method="post">
+            <form hx-post="{{ action_url }}" hx-target="#modal-content" hx-swap="innerHTML">
                 {% csrf_token %}
 
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -101,7 +106,7 @@
                         <div class="flex items-center">
                             {{ form.is_active }}
                             <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
-                                Active
+                                Active Product
                             </label>
                         </div>
                         {% if form.is_active.errors %}
@@ -111,13 +116,13 @@
                 </div>
 
                 <!-- Form Actions -->
-                <div class="mt-6 flex justify-end space-x-3">
+                <div class="mt-6 flex items-center justify-end space-x-3">
                     <button type="button" onclick="hideModal()"
-                        class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Cancel
                     </button>
                     <button type="submit"
-                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         {{ submit_text }}
                     </button>
                 </div>
@@ -125,3 +130,4 @@
         </div>
     </div>
 </div>
+{% endblock %}

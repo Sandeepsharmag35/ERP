@@ -202,7 +202,7 @@ def uom_create(request):
 
     return render(
         request,
-        "product/uom_form.html",
+        "product/partials/uom_form.html",
         {
             "form": form,
             "title": "Create UoM",
@@ -212,7 +212,7 @@ def uom_create(request):
     )
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET", "POST"])
 def product_uom_create(request, product_pk):
     """Add UoM to product"""
     product = get_object_or_404(Product, pk=product_pk)

@@ -9,25 +9,25 @@ class UomForm(forms.ModelForm):
         widgets = {
             "code": forms.TextInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "placeholder": "e.g., EA, KG, M",
                 }
             ),
             "name": forms.TextInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "placeholder": "e.g., Each, Kilogram, Meter",
                 }
             ),
             "category": forms.TextInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "placeholder": "e.g., weight, length, qty",
                 }
             ),
             "conversion_to_si": forms.NumberInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "step": "0.0001",
                     "placeholder": "1.0000",
                 }
@@ -51,48 +51,48 @@ class ProductForm(forms.ModelForm):
         widgets = {
             "product_code": forms.TextInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "placeholder": "Product code",
                 }
             ),
             "name": forms.TextInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "placeholder": "Product name",
                 }
             ),
             "base_uom": forms.Select(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 }
             ),
             "costing_method": forms.Select(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 }
             ),
             "tracking_method": forms.Select(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 }
             ),
             "safety_stock": forms.NumberInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "step": "0.01",
                     "min": "0",
                 }
             ),
             "reorder_qty": forms.NumberInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "step": "0.01",
                     "min": "0",
                 }
             ),
             "is_active": forms.CheckboxInput(
                 attrs={
-                    "class": "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    "class": "h-4 w-4 p-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 }
             ),
         }
@@ -109,24 +109,24 @@ class ProductUomForm(forms.ModelForm):
         widgets = {
             "uom": forms.Select(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 }
             ),
             "factor": forms.NumberInput(
                 attrs={
-                    "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                    "class": "mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
                     "step": "0.0001",
                     "min": "0.0001",
                 }
             ),
             "is_default_sales": forms.CheckboxInput(
                 attrs={
-                    "class": "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    "class": "h-4 w-4 p-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 }
             ),
             "is_default_purchase": forms.CheckboxInput(
                 attrs={
-                    "class": "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    "class": "h-4 w-4 p-2 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 }
             ),
         }

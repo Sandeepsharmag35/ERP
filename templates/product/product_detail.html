@@ -39,6 +39,7 @@
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">{{ product.name }}</h1>
                 <p class="text-sm text-gray-500">Product Code: {{ product.product_code }}</p>
+                <p class="text-sm text-gray-500">Org Code: {{ product.organization_id }}</p>
             </div>
             <div class="flex items-center space-x-3">
                 {% if product.is_active %}
@@ -95,11 +96,11 @@
     <div class="px-6 py-4 border-b border-gray-200">
         <div class="flex items-center justify-between">
             <h2 class="text-lg font-medium text-gray-900">Units of Measure</h2>
-            <button hx-get="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content" onclick="showModal()"
+            <a href="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
                 <i class="fas fa-plus mr-2"></i>
                 Add UoM
-            </button>
+            </a>
         </div>
     </div>
 
@@ -184,11 +185,11 @@
         <p class="text-gray-500 mb-4">
             Add alternative units of measure for this product.
         </p>
-        <button hx-post="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content" onclick="showModal()"
+        <a href="{% url 'product-uom-create' product.pk %}" hx-target="#modal-content"
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
             <i class="fas fa-plus mr-2"></i>
             Add UoM
-        </button>
+        </a>
     </div>
     {% endif %}
 </div>
