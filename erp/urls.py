@@ -20,25 +20,17 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from product.views import ProductViewSet, ProductUomViewSet, UomViewSet
-from inventory.views import (
-    WarehouseViewSet,
-    InventoryLocationViewSet,
-    InventoryItemViewSet,
-    InventoryTransactionViewSet,
-)
+from product.views import UoMViewSet, ProductViewSet
+from inventory.views import WarehouseViewSet, InventoryLocationViewSet, StockViewSet
 
 router = DefaultRouter()
 # Product
-router.register(r"products", ProductViewSet)
-router.register(r"uom", UomViewSet)
-router.register(r"product-uom", ProductUomViewSet)
-
+router.register(r"uom", UoMViewSet)
+router.register(r"products", ProductViewSet, basename="product")
 # Inventory
-router.register(r"warehouses", WarehouseViewSet)
-router.register(r"locations", InventoryLocationViewSet)
-router.register(r"stock-items", InventoryItemViewSet)
-router.register(r"stock-movements", InventoryTransactionViewSet)
+router.register(r"warehouses", WarehouseViewSet, basename="warehouse")
+router.register(r"locations", InventoryLocationViewSet, basename="location")
+router.register(r"stock", StockViewSet, basename="stock")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
