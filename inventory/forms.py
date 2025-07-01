@@ -60,7 +60,7 @@ class InventoryLocationForm(ModelForm):
         widgets = {
             "user": forms.Select(
                 attrs={
-                    "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
                 }
             ),
             "organization": forms.Select(
@@ -100,17 +100,26 @@ class InventoryLocationForm(ModelForm):
 
 
 class InventoryTransactionForm(ModelForm):
+    location = forms.ModelChoiceField(
+        queryset=InventoryLocation.objects.all(),
+        required=True,
+        help_text="Select the inventory location",
+    )
+
     class Meta:
         model = InventoryTransaction
         fields = [
             "user",
             "organization",
             "transaction_type",
+            "transaction_date",
             "product",
             "from_warehouse",
             "to_warehouse",
             "quantity",
             "unit_cost",
+            "journal_id",
+            "location",
         ]
         widgets = {
             "user": forms.Select(
@@ -129,6 +138,12 @@ class InventoryTransactionForm(ModelForm):
                     "hx-get": "/inventory/transaction-fields/",
                     "hx-target": "#warehouse-fields",
                     "hx-trigger": "change",
+                }
+            ),
+            "transaction_date": forms.DateTimeInput(
+                attrs={
+                    "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                    "type": "datetime-local",
                 }
             ),
             "product": forms.Select(
@@ -158,6 +173,17 @@ class InventoryTransactionForm(ModelForm):
                     "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
                     "step": "0.0001",
                     "min": "0",
+                }
+            ),
+            "journal_id": forms.TextInput(
+                attrs={
+                    "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                    "placeholder": "Enter journal ID (optional)",
+                }
+            ),
+            "location": forms.Select(
+                attrs={
+                    "class": "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 }
             ),
         }

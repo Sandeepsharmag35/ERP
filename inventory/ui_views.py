@@ -11,7 +11,7 @@ from .forms import (
     InventoryTransactionForm,
     StockFilterForm,
 )
-import json
+from services.inventory_service import InventoryService
 
 
 def warehouse_list(request):
@@ -114,12 +114,45 @@ def stock_movement_create(request):
         form = InventoryTransactionForm(request.POST)
 
         if form.is_valid():
-            transaction = form.save()
+            data = form.cleaned_data
+            dto = {
+                "user": data["user"],
+                "organization_id": data["organization"].id,
+                "product_id": data["product"].product_id,
+                "transaction_type": data["transaction_type"],
+                "quantity": data["quantity"],
+                "unit_cost": data["unit_cost"],
+                "from_warehouse": data.get("from_warehouse").warehouse_id,
+                "to_warehouse": data.get("to_warehouse").warehouse_id,
+                "transaction_date": data["transaction_date"],
+                "journal_id": data["journal_id"],
+                "location_id": (
+                    data["location"].location_id if data.get("location") else None
+                ),
+            }
+
+            try:
+                result = InventoryService.post_stock_movement(request.user, dto)
+            except Exception as e:
+                if request.headers.get("HX-Request"):
+                    messages.error(request, str(e))
+                    return render(
+                        request,
+                        "inventory/partials/transaction_form.html",
+                        {"form": form},
+                    )
+
+                return JsonResponse({"success": False, "error": str(e)}, status=400)
+
+            transaction_obj = InventoryTransaction.objects.select_related(
+                "product"
+            ).get(transaction_id=result["transaction_id"])
 
             response_data = {
-                "transaction_id": str(transaction.transaction_id),
+                "transaction_id": str(result["transaction_id"]),
                 "success": True,
-                "message": f"Transaction {transaction.transaction_type} created successfully",
+                "message": f"Transaction {dto['transaction_type']} created successfully",
+                "cost_amount": result["cost_amount"],
             }
 
             if request.headers.get("HX-Request"):
@@ -127,7 +160,7 @@ def stock_movement_create(request):
                 return render(
                     request,
                     "inventory/partials/transaction_success.html",
-                    {"transaction": transaction},
+                    {"transaction": transaction_obj},
                 )
 
             return JsonResponse(response_data, status=201)

@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
-from .models import Product, Uom, ProductUom
+from .models import Product, UoM, ProductUoM
 from .forms import ProductForm, UomForm, ProductUomForm
 
 
@@ -108,7 +108,7 @@ def product_create(request):
 def product_detail(request, pk):
     """Product detail view"""
     product = get_object_or_404(Product, pk=pk)
-    product_uoms = ProductUom.objects.filter(product=product).select_related("uom")
+    product_uoms = ProductUoM.objects.filter(product=product).select_related("uom")
 
     return render(
         request,
@@ -120,7 +120,7 @@ def product_detail(request, pk):
 def uom_list(request):
     """List UoMs with HTMX support"""
     search_query = request.GET.get("search", "")
-    uoms = Uom.objects.all()
+    uoms = UoM.objects.all()
 
     if search_query:
         uoms = uoms.filter(

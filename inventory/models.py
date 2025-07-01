@@ -35,6 +35,9 @@ class InventoryLocation(UserOrganizationMixin, TimestampedModel):
     class Meta:
         unique_together = ("warehouse", "code")
 
+    def __str__(self):
+        return self.name
+
 
 class InventoryItem(UserOrganizationMixin, TimestampedModel):
     inventory_item_id = models.AutoField(primary_key=True)

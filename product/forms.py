@@ -1,11 +1,18 @@
 from django import forms
-from .models import Product, Uom, ProductUom
+from .models import Product, UoM, ProductUoM
 
 
 class UomForm(forms.ModelForm):
     class Meta:
-        model = Uom
-        fields = ["user", "organization", "code", "name", "category", "conversion_to_si"]
+        model = UoM
+        fields = [
+            "user",
+            "organization",
+            "code",
+            "name",
+            "category",
+            "conversion_to_si",
+        ]
         widgets = {
             "user": forms.Select(
                 attrs={
@@ -121,12 +128,12 @@ class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["base_uom"].queryset = Uom.objects.all()
+        self.fields["base_uom"].queryset = UoM.objects.all()
 
 
 class ProductUomForm(forms.ModelForm):
     class Meta:
-        model = ProductUom
+        model = ProductUoM
         fields = ["uom", "factor", "is_default_sales", "is_default_purchase"]
         widgets = {
             "uom": forms.Select(
@@ -155,4 +162,4 @@ class ProductUomForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["uom"].queryset = Uom.objects.all()
+        self.fields["uom"].queryset = UoM.objects.all()

@@ -7,6 +7,7 @@ class WarehouseSerializer(serializers.ModelSerializer):
         model = Warehouse
         fields = [
             "warehouse_id",
+            "user",
             "organization_id",
             "code",
             "name",
@@ -34,6 +35,8 @@ class InventoryLocationSerializer(serializers.ModelSerializer):
             "name",
             "location_type",
             "is_active",
+            "user",
+            "organization_id",
         ]
 
 
@@ -58,6 +61,7 @@ class StockMovementSerializer(serializers.ModelSerializer):
         model = InventoryTransaction
         fields = [
             "transaction_id",
+            "user",
             "organization_id",
             "transaction_type",
             "transaction_date",

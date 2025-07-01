@@ -23,7 +23,8 @@
         </div>
 
         <div class="px-6 py-6">
-            <form hx-post="{% url 'stock_movement_create' %}" hx-target="#transaction-result" class="space-y-6">
+            <form hx-post="{% url 'stock_movement_create' %}" hx-target="#transaction-result" class="space-y-6"
+                method="post">
                 {% csrf_token %}
                 {% include 'inventory/partials/transaction_form.html' %}
 

@@ -7,13 +7,13 @@ urlpatterns = [
     path("warehouses/", ui_views.warehouse_list, name="warehouse_list"),
     path("warehouses/create/", ui_views.warehouse_create, name="warehouse_create"),
     path(
-        "warehouses/<uuid:warehouse_id>/",
+        "warehouses/<int:warehouse_id>/",
         ui_views.warehouse_detail,
         name="warehouse_detail",
     ),
     # Inventory Locations
     path(
-        "warehouses/<uuid:warehouse_id>/locations/create/",
+        "warehouses/<int:warehouse_id>/locations/create/",
         ui_views.location_create,
         name="location_create",
     ),
